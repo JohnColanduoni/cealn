@@ -34,7 +34,7 @@ use fuse_backend_rs::{
 use futures::{future::RemoteHandle, Future};
 use hashbrown::HashMap;
 use libc::c_int;
-use tracing::{debug_span, error, log::warn, trace, trace_span};
+use tracing::{debug_span, error, trace, trace_span};
 
 pub const CACHE_MOUNT_PATH: &str = "/.cealn-cache";
 
