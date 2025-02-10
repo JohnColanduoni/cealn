@@ -132,10 +132,7 @@ impl DepmapStorable for String {
     #[inline]
     fn from_bytes<'a>(bytes: &'a [u8]) -> Option<(&'a str, &'a [u8])> {
         const LENGTH_SIZE: usize = mem::size_of::<u64>();
-        if bytes.len() < LENGTH_SIZE {
-            return None;
-        }
-        let (length_bytes, tail) = bytes.split_array_ref::<LENGTH_SIZE>();
+        let (length_bytes, tail) = bytes.split_first_chunk::<LENGTH_SIZE>()?;
         let length = usize::try_from(u64::from_le_bytes(length_bytes.clone())).ok()?;
         if tail.len() < length {
             return None;
@@ -183,11 +180,8 @@ impl DepmapStorable for FileEntry {
         let (&typecode, tail) = bytes.split_first()?;
         match typecode {
             FILE_ENTRY_REGULAR_TYPECODE => {
-                if tail.len() < 1 + 32 {
-                    return None;
-                }
                 let (&executable, tail) = tail.split_first()?;
-                let (digest, tail) = tail.split_array_ref::<32>();
+                let (digest, tail) = tail.split_first_chunk::<32>()?;
                 Some((
                     FileEntryRef::Regular {
                         content_hash: FileHashRef::Sha256(digest),
@@ -197,10 +191,7 @@ impl DepmapStorable for FileEntry {
                 ))
             }
             FILE_ENTRY_SYMLINK_TYPECODE => {
-                if tail.len() < LENGTH_BYTE_COUNT {
-                    return None;
-                }
-                let (len_bytes, tail) = tail.split_array_ref::<LENGTH_BYTE_COUNT>();
+                let (len_bytes, tail) = tail.split_first_chunk::<LENGTH_BYTE_COUNT>()?;
                 let len = u64::from_le_bytes(*len_bytes) as usize;
                 if tail.len() < len {
                     return None;
@@ -227,10 +218,7 @@ impl DepmapStorable for LabelBuf {
     #[inline]
     fn from_bytes<'a>(bytes: &'a [u8]) -> Option<(&'a Label, &'a [u8])> {
         const LENGTH_SIZE: usize = mem::size_of::<u64>();
-        if bytes.len() < LENGTH_SIZE {
-            return None;
-        }
-        let (length_bytes, tail) = bytes.split_array_ref::<LENGTH_SIZE>();
+        let (length_bytes, tail) = bytes.split_first_chunk::<LENGTH_SIZE>()?;
         let length = usize::try_from(u64::from_le_bytes(length_bytes.clone())).ok()?;
         if tail.len() < length {
             return None;
@@ -254,10 +242,7 @@ impl DepmapStorable for LabelPathBuf {
     #[inline]
     fn from_bytes<'a>(bytes: &'a [u8]) -> Option<(&'a LabelPath, &'a [u8])> {
         const LENGTH_SIZE: usize = mem::size_of::<u64>();
-        if bytes.len() < LENGTH_SIZE {
-            return None;
-        }
-        let (length_bytes, tail) = bytes.split_array_ref::<LENGTH_SIZE>();
+        let (length_bytes, tail) = bytes.split_first_chunk::<LENGTH_SIZE>()?;
         let length = usize::try_from(u64::from_le_bytes(length_bytes.clone())).ok()?;
         if tail.len() < length {
             return None;
@@ -281,10 +266,7 @@ impl DepmapStorable for NormalizedDescending<LabelPathBuf> {
     #[inline]
     fn from_bytes<'a>(bytes: &'a [u8]) -> Option<(NormalizedDescending<&'a LabelPath>, &'a [u8])> {
         const LENGTH_SIZE: usize = mem::size_of::<u64>();
-        if bytes.len() < LENGTH_SIZE {
-            return None;
-        }
-        let (length_bytes, tail) = bytes.split_array_ref::<LENGTH_SIZE>();
+        let (length_bytes, tail) = bytes.split_first_chunk::<LENGTH_SIZE>()?;
         let length = usize::try_from(u64::from_le_bytes(length_bytes.clone())).ok()?;
         if tail.len() < length {
             return None;

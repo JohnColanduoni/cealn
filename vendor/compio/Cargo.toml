@@ -1,0 +1,10 @@
+[workspace]
+members = [
+    "compio-core",
+    "compio-ipc",
+    "compio-executor",
+    "compio-net",
+    "compio-fs",
+
+    "compio-internal-util"
+]

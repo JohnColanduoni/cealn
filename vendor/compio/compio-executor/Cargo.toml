@@ -1,0 +1,22 @@
+[package]
+name = "compio-executor"
+version = "0.0.0"
+edition = "2018"
+
+[features]
+local-pool = []
+thread-pool = ["crossbeam-deque", "crossbeam-utils", "num_cpus", "rand"]
+
+[dependencies]
+compio-core = { path = "../compio-core", default-features = false }
+
+crossbeam-deque = { version = "0.8.3", optional = true }
+crossbeam-utils = { version = "0.8.15", optional = true }
+num_cpus = { version = "1.15", optional = true }
+rand = { version = "0.8.5", optional = true, default-features = false, features = ["small_rng", "getrandom"] }
+futures = "0.3.12"
+pin-project = "1.0"
+scoped-tls = "1.0"
+
+[dev-dependencies]
+compio-core = { path = "../compio-core", features = ["io-uring"] }

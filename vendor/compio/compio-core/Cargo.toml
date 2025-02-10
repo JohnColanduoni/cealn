@@ -1,0 +1,38 @@
+[package]
+name = "compio-core"
+version = "0.0.0"
+edition = "2018"
+
+[features]
+# Emit performance warnings via `tracing` when fallback behavior (e.g. copies) is triggered.
+perf-warnings = []
+
+[dependencies]
+compio-internal-util = { path = "../compio-internal-util" }
+
+cfg-if = "1.0"
+crossbeam-utils = "0.8.0"
+bytes = "1.4"
+futures = "0.3.12"
+parking_lot = "0.11.2"
+pin-project = "1.0"
+scoped-tls = "1.0"
+smallvec = "1.6"
+static_assertions = "1.1.0"
+slab = "0.4.3"
+tracing = "0.1.22"
+tokio = { version = "1.0", default-features = false, optional = true }
+
+[target.'cfg(target_os = "windows")'.dependencies]
+winapi = { version = "0.3.9", features = ["minwindef", "handleapi", "ioapiset", "ws2def"] }
+winhandle = "0.3.0"
+num_cpus = "1.13"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.98"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+io-uring = { version = "0.6.0", optional = true }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+mach = "0.3.2"

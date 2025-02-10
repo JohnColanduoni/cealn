@@ -52,11 +52,6 @@ unsafe extern "C" fn chdir(_path: *const c_char) -> c_int {
 }
 
 #[no_mangle]
-extern "C" fn chmod(_path: *const c_char, _mode: mode_t) -> c_int {
-    unimplemented!()
-}
-
-#[no_mangle]
 extern "C" fn umask(_mode: mode_t) -> mode_t {
     unimplemented!()
 }

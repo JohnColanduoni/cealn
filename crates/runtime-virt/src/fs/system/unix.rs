@@ -138,6 +138,7 @@ impl DirectoryHandle {
             #[cfg(target_os = "macos")]
             {
                 use cealn_core::fs::unix::path_of_fd;
+                use compio_fs::os::macos::FileExt;
 
                 let file_path = path_of_fd(file.as_raw_fd()).map_err(|_| types::Errno::Io)?;
                 // Do comparison at byte level so we don't have to waste time with a utf-8 check

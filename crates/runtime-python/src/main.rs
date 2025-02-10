@@ -1,5 +1,6 @@
 #![feature(panic_info_message)]
 #![feature(core_intrinsics)]
+#![feature(panic_payload_as_str)]
 
 use core::arch::wasm32;
 use std::{ffi::CStr, mem, panic::PanicInfo};
@@ -98,7 +99,7 @@ fn panic_hook(panic_info: &PanicInfo) {
     if let Some(location) = panic_info.location() {
         eprint!("{}:{}: ", location.file(), location.line());
     }
-    if let Some(message) = panic_info.message() {
+    if let Some(message) = panic_info.payload_as_str() {
         eprintln!("{}", message);
     }
     wasm32::unreachable();

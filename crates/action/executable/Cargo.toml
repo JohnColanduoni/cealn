@@ -39,7 +39,7 @@ tokio = "1.0"
 tracing = "0.1.19"
 compio-core = { workspace = true, features = ["io-uring"] }
 compio-fs = { workspace = true, features = ["io-uring"] }
-compio-executor = { path = "../../../../public/compio/compio-executor", features = ["local-pool"] }
+compio-executor = { workspace = true, features = ["local-pool"] }
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2.74"

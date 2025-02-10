@@ -15,4 +15,4 @@ futures = "0.3"
 ring = "0.16.20"
 tracing = "0.1.19"
 git2 = { version = "0.17.0", features = ["vendored-openssl"] }
-compio-executor = { path = "../../../../public/compio/compio-executor" }
+compio-executor = { workspace = true }

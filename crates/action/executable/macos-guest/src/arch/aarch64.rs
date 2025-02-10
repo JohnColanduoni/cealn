@@ -1,10 +1,9 @@
-use core::arch::asm;
+use core::arch::{asm, naked_asm};
 
-#[start]
 #[no_mangle]
 #[naked]
 pub unsafe extern "C" fn _start() {
-    asm!(
+    naked_asm!(
         // Setup stack
         "mov x9, #0x1",
         "msr spsel, x9",
@@ -24,7 +23,6 @@ pub unsafe extern "C" fn _start() {
         bootstrap_stack = sym crate::BOOTSTRAP_KERNEL_STACK,
         stack_size = const crate::KERNEL_STACK_SIZE,
         exception_vector_table = sym exception_vector_table,
-        options(noreturn),
     );
 }
 
@@ -49,7 +47,7 @@ pub fn panic_exit(message: &[u8]) -> ! {
 
 #[naked]
 pub unsafe extern "C" fn exception_vector_table() {
-    asm!(
+    naked_asm!(
         ".balign 0x800",
         // Current EL, SP0, Synchronous
         "mov x0, #0x0",
@@ -100,13 +98,12 @@ pub unsafe extern "C" fn exception_vector_table() {
         "b {unexpected_vector}",
         unexpected_vector = sym unexpected_vector,
         lower_el_sync_entry = sym lower_el_sync_entry,
-        options(noreturn)
     )
 }
 
 #[naked]
 unsafe extern "C" fn lower_el_sync_entry() -> ! {
-    asm!(
+    naked_asm!(
         "stp x29, x30, [sp, #-0x10]!",
         "stp x27, x28, [sp, #-0x10]!",
         "stp x25, x26, [sp, #-0x10]!",
@@ -152,7 +149,6 @@ unsafe extern "C" fn lower_el_sync_entry() -> ! {
         "ldp x29, x30, [sp], #0x10",
         "eret",
         lower_el_sync = sym lower_el_sync,
-        options(noreturn),
     );
 }
 
@@ -171,5 +167,5 @@ unsafe extern "C" fn lower_el_sync(regs: *mut ExceptionRegs) {
 
 #[naked]
 unsafe extern "C" fn unexpected_vector() -> ! {
-    asm!("hvc #0x71", options(noreturn))
+    naked_asm!("hvc #0x71")
 }

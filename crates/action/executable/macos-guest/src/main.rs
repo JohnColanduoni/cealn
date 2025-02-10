@@ -1,6 +1,6 @@
-#![feature(lang_items, start, naked_functions)]
+#![feature(lang_items, naked_functions)]
 #![feature(asm_const)]
-#![feature(maybe_uninit_uninit_array, const_maybe_uninit_uninit_array)]
+#![feature(maybe_uninit_uninit_array)]
 #![feature(panic_info_message)]
 #![no_std]
 #![no_main]
@@ -26,11 +26,7 @@ fn main() -> ! {
 #[panic_handler]
 fn panic(info: &core::panic::PanicInfo) -> ! {
     unsafe {
-        let formatted = if let Some(message) = info.message() {
-            util::format_static(&mut PANIC_BUFFER[..], *message)
-        } else {
-            util::format_static(&mut PANIC_BUFFER[..], format_args!("[UNKNOWN]"))
-        };
+        let formatted = util::format_static(&mut PANIC_BUFFER[..], format_args!("{}", info.message()));
         arch::panic_exit(formatted);
     }
 }

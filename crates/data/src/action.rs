@@ -435,10 +435,11 @@ impl JsonPath {
     pub fn extract_match<'a>(&'a self, value: &'a serde_json::Value) -> Option<Cow<'a, serde_json::Value>> {
         // TODO: cache instance
         let instance = jsonpath_rust::path::json_path_instance(&self.parsed, value);
-        let matches = instance.find(jsonpath_rust::JsonPathValue::Slice(value));
+        // TODO: can we avoid to_owned here?
+        let matches = instance.find(jsonpath_rust::JsonPathValue::NewValue(value.to_owned()));
         let mut matches: VecDeque<_> = matches.into();
         match matches.pop_front() {
-            Some(jsonpath_rust::JsonPathValue::Slice(match_value)) => Some(Cow::Borrowed(match_value)),
+            Some(jsonpath_rust::JsonPathValue::Slice(match_value, _)) => Some(Cow::Borrowed(match_value)),
             Some(jsonpath_rust::JsonPathValue::NewValue(match_value)) => Some(Cow::Owned(match_value)),
             _ => None,
         }

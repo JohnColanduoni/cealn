@@ -236,29 +236,26 @@ pub fn scan_transitive_nodes<K: DepmapKey, V: DepmapStorable>(
                 buffer = tail;
             }
             TRANSITIVE_TAG => {
-                if tail.len() < 32 {
+                let Some((digest, tail)) = tail.split_first_chunk::<32>() else {
                     return Err(ParseError);
-                }
-                let (digest, tail) = tail.split_array_ref::<32>();
+                };
                 let digest = DepmapHash::Sha256(*digest);
                 nodes.push(digest);
                 buffer = tail;
             }
             FILTER_TAG => {
-                if tail.len() < 32 {
+                let Some((digest, tail)) = tail.split_first_chunk::<32>() else {
                     return Err(ParseError);
-                }
-                let (digest, tail) = tail.split_array_ref::<32>();
+                };
                 let digest = DepmapHash::Sha256(*digest);
                 nodes.push(digest);
                 let Some((_prefix, tail)) = K::from_bytes(tail) else {
                     return Err(ParseError);
                 };
                 const PATTERN_COUNT_SIZE: usize = mem::size_of::<u64>();
-                if tail.len() < PATTERN_COUNT_SIZE {
+                let Some((pattern_count, tail)) = tail.split_first_chunk::<PATTERN_COUNT_SIZE>() else {
                     return Err(ParseError);
-                }
-                let (pattern_count, tail) = tail.split_array_ref::<PATTERN_COUNT_SIZE>();
+                };
                 let Ok(pattern_count) = usize::try_from(u64::from_le_bytes(*pattern_count)) else {
                     return Err(ParseError);
                 };
@@ -266,10 +263,9 @@ pub fn scan_transitive_nodes<K: DepmapKey, V: DepmapStorable>(
                 for _ in 0..pattern_count {
                     let tail = pattern_tail;
                     const PATTERN_LEN_SIZE: usize = mem::size_of::<u64>();
-                    if tail.len() < PATTERN_LEN_SIZE {
+                    let Some((pattern_len, tail)) = tail.split_first_chunk::<PATTERN_LEN_SIZE>() else {
                         return Err(ParseError);
-                    }
-                    let (pattern_len, tail) = tail.split_array_ref::<PATTERN_LEN_SIZE>();
+                    };
                     let Ok(pattern_len) = usize::try_from(u64::from_le_bytes(*pattern_len)) else {
                         return Err(ParseError);
                     };
@@ -355,10 +351,9 @@ impl<'a, K: DepmapKey, V: DepmapStorable> Iterator for Iter<'a, K, V> {
                     return Some(Ok((K::cow_borrowed(k), v)));
                 }
                 TRANSITIVE_TAG => {
-                    if tail.len() < 32 {
+                    let Some((digest, tail)) = tail.split_first_chunk() else {
                         return Some(Err(ParseError));
-                    }
-                    let (digest, tail) = tail.split_array_ref();
+                    };
                     let Some(node) = self.transitive_nodes.next() else {
                         return Some(Err(ParseError));
                     };
@@ -386,11 +381,10 @@ impl<'a, K: DepmapKey, V: DepmapStorable> Iterator for Iter<'a, K, V> {
                     continue;
                 }
                 FILTER_TAG => {
-                    if tail.len() < 32 {
+                    let Some((digest, tail)) = tail.split_first_chunk() else {
                         error!("no space for transitive depmap hash");
                         return Some(Err(ParseError));
-                    }
-                    let (digest, tail) = tail.split_array_ref();
+                    };
                     let Some(node) = self.transitive_nodes.next() else {
                         error!("more transitive depmap referneces in data that we have nodes");
                         return Some(Err(ParseError));
@@ -400,11 +394,10 @@ impl<'a, K: DepmapKey, V: DepmapStorable> Iterator for Iter<'a, K, V> {
                         return Some(Err(ParseError));
                     };
                     const PATTERN_COUNT_SIZE: usize = mem::size_of::<u64>();
-                    if tail.len() < PATTERN_COUNT_SIZE {
+                    let Some((pattern_count, tail)) = tail.split_first_chunk::<PATTERN_COUNT_SIZE>() else {
                         error!("no space for pattern count");
                         return Some(Err(ParseError));
-                    }
-                    let (pattern_count, tail) = tail.split_array_ref::<PATTERN_COUNT_SIZE>();
+                    };
                     let Ok(pattern_count) = usize::try_from(u64::from_le_bytes(*pattern_count)) else {
                         error!("pattern count too large");
                         return Some(Err(ParseError));
@@ -414,11 +407,10 @@ impl<'a, K: DepmapKey, V: DepmapStorable> Iterator for Iter<'a, K, V> {
                     for _ in 0..pattern_count {
                         let tail = pattern_tail;
                         const PATTERN_LEN_SIZE: usize = mem::size_of::<u64>();
-                        if tail.len() < PATTERN_LEN_SIZE {
+                        let Some((pattern_len, tail)) = tail.split_first_chunk::<PATTERN_LEN_SIZE>() else {
                             error!("no space for pattern length");
                             return Some(Err(ParseError));
-                        }
-                        let (pattern_len, tail) = tail.split_array_ref::<PATTERN_LEN_SIZE>();
+                        };
                         let Ok(pattern_len) = usize::try_from(u64::from_le_bytes(*pattern_len)) else {
                             error!("pattern length too big");
                             return Some(Err(ParseError));

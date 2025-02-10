@@ -58,15 +58,10 @@ opt-level = 2
 lto = false
 incremental = true
 
-[patch.crates-io]
-tracing-opentelemetry = { path = "../vendor/tracing-opentelemetry" }
-opentelemetry = { path = "../vendor/opentelemetry-rust/opentelemetry" }
-opentelemetry-otlp = { path = "../vendor/opentelemetry-rust/opentelemetry-otlp" }
-anyhow = { path = "../vendor/anyhow" }
-
 [workspace.dependencies]
-compio-fs = { path = "../public/compio/compio-fs" }
-compio-core = { path = "../public/compio/compio-core" }
+compio-fs = { path = "vendor/compio/compio-fs" }
+compio-core = { path = "vendor/compio/compio-core" }
+compio-executor = { path = "vendor/compio/compio-executor" }
 reqwest = { version = "0.11.4", default-features = false, features = ["rustls-tls-native-roots", "trust-dns", "gzip", "deflate", "json", "socks"] }
 
 anyhow = { version = "1.0", features = ["backtrace"] }

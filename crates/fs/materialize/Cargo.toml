@@ -22,9 +22,9 @@ rand = "0.8.4"
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 tracing = "0.1.19"
-compio-core = { workspace = true }
-compio-fs = { workspace = true }
-compio-executor = { path = "../../../../public/compio/compio-executor" }
+compio-core.workspace = true
+compio-fs.workspace = true
+compio-executor.workspace =true
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2.74"

@@ -16,8 +16,8 @@ futures = "0.3.5"
 hex = "0.4.3"
 rand = "0.8.4"
 tracing = "0.1.19"
-compio-fs = { path = "../../../public/compio/compio-fs", features = ["io-uring"] }
-compio-executor = { path = "../../../public/compio/compio-executor" }
+compio-fs = { workspace = true, features = ["io-uring"] }
+compio-executor.workspace = true
 
 [target.'cfg(unix)'.dependencies]
 libc = "0.2.74"

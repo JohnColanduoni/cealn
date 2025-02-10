@@ -67,10 +67,10 @@ where
     T: DeserializeOwned,
 {
     unsafe {
-        let slice = Box::from_raw(slice_ptr as *mut InputSlice);
-        let slice = std::slice::from_raw_parts(slice.data as *const u8, slice.length);
+        let box_slice = Box::from_raw(slice_ptr as *mut InputSlice);
+        let slice = std::slice::from_raw_parts(box_slice.data as *const u8, box_slice.length);
         let data: T = serde_json::from_slice(slice).unwrap();
-        mem::drop(slice);
+        mem::drop(box_slice);
         data
     }
 }
