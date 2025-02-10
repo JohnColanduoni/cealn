@@ -34,10 +34,8 @@ use std::{
 
 use anyhow::{bail, Context as AnyhowContext, Result};
 use cealn_action_context::Context;
-use cealn_data::{
-    action::{ActionOutput, ExecutePlatform, Run},
-    depmap::{ConcreteFiletree, DepmapHash},
-};
+use cealn_data::{action::{ActionOutput, ExecutePlatform, Run}, depmap::ConcreteFiletreeType};
+use cealn_depset::ConcreteFiletree;
 use cealn_event::{BuildEventData, EventContext};
 use cealn_fs::Cachefile;
 use cealn_protocol::query::{StdioLine, StdioStreamType};
@@ -56,7 +54,7 @@ use tracing::debug;
 
 use crate::platform::{vfs::Vfs, vm::Vm};
 
-pub async fn run<C>(context: &C, action: &Run<ConcreteFiletree>) -> Result<ActionOutput>
+pub async fn run<C>(context: &C, action: &Run<ConcreteFiletreeType>) -> Result<ActionOutput>
 where
     C: Context,
 {
@@ -64,6 +62,7 @@ where
 
     match &action.platform {
         ExecutePlatform::Linux(platform) => {
+            // FIXME: testing
             let mut vfs = Vfs::new(context.clone());
             vfs.mount("/", platform.execution_sysroot.clone());
             let mut kernel = vm.new_linux_virtual_kernel(vfs)?;

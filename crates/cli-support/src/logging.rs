@@ -109,7 +109,7 @@ pub fn init(debug: bool, is_server: bool) -> LoggingGuard {
                 .with_trace_config(opentelemetry::sdk::trace::config().with_resource(
                     opentelemetry::sdk::Resource::new(vec![
                         opentelemetry::KeyValue::new(
-                            opentelemetry_semantic_conventions::resource::SERVICE_NAME,
+                            opentelemetry_semantic_conventions::resource::SERVICE_NAME.as_str(),
                             "cealn",
                         ),
                         opentelemetry::KeyValue::new("build.profile", env!("PROFILE")),

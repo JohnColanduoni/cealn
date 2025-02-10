@@ -5,7 +5,7 @@ use anyhow::Result;
 use cealn_action_context::Context;
 use cealn_data::{
     depmap::ConcreteDepmapReference,
-    file_entry::{FileEntry, FileEntryRef},
+    file_entry::{FileEntry, FileEntryRef}, label::LabelPath,
 };
 use cealn_depset::DepMap;
 
@@ -47,11 +47,17 @@ where
             if !(prefix.ends_with("/") || subpath.starts_with("/") || subpath.is_empty()) {
                 continue;
             }
+            let Ok(subpath) = LabelPath::new(subpath) else {
+                continue;
+            };
+            let Some(subpath) = subpath.normalize_require_descending() else {
+                continue;
+            };
 
             let file_path = futures::executor::block_on(async {
                 let depmap = self.context.lookup_concrete_depmap_force_directory(&reference).await?;
 
-                let Some(entry) = depmap.get(subpath)? else {
+                let Some(entry) = depmap.get(subpath.as_ref())? else {
                     return Ok::<_, anyhow::Error>(None);
                 };
 

@@ -3,6 +3,7 @@ use std::{ptr, sync::Arc, thread::JoinHandle};
 use anyhow::{bail, Result};
 
 use cealn_action_executable_macos_sys::*;
+use cealn_action_executable_macos_sys as sys;
 use tracing::{debug, error};
 
 use crate::platform::{mman::VmRegion, process::_Process, sys::arm_thread_state64_t};
@@ -82,7 +83,7 @@ pub unsafe fn drive(cpu: hv_vcpu_t, cpu_exit: *mut hv_vcpu_exit_t) -> Result<()>
 
         let cpu_exit = &*cpu_exit;
         match cpu_exit.reason {
-            HV_EXIT_REASON_EXCEPTION => {
+            sys::HV_EXIT_REASON_EXCEPTION => {
                 let syndrome = cpu_exit.exception.syndrome;
                 let ec = (syndrome >> 26) & 0x3f;
                 let faulting_addr = cpu_exit.exception.virtual_address;
