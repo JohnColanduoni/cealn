@@ -1,0 +1,12 @@
+from cealn.label import Label
+
+from .rules.copy import Copy
+
+print(Copy.label)
+assert Copy.label == Label("//my_package/rules/copy.py")
+
+invocation = Copy(
+    name="copied",
+    src="some_file",
+    dest="other_file",
+)

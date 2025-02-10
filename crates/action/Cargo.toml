@@ -1,0 +1,20 @@
+[package]
+name = "cealn-action"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-action-context = { path = "context" }
+cealn-action-docker = { path = "docker" }
+cealn-action-net = { path = "net" }
+cealn-action-extract = { path = "extract" }
+cealn-action-executable = { path = "executable" }
+cealn-action-git = { path = "git" }
+cealn-data = { path = "../data" }
+cealn-depset = { path = "../depset" }
+
+anyhow.workspace = true
+ring = "0.16.20"
+futures = "0.3"
+compio-core = { workspace = true }
+compio-fs = { workspace = true }

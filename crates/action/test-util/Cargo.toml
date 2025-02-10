@@ -1,0 +1,17 @@
+[package]
+name = "cealn-action-test-util"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-action-context = { path = "../context" }
+cealn-data = { path = "../../data" }
+cealn-depset = { path = "../../depset" }
+cealn-cache = {path = "../../cache" }
+cealn-fs = { path = "../../fs" }
+cealn-test-util = {path = "../../test-util" }
+
+anyhow.workspace = true
+hex = "0.4.3"
+tokio = "1.10"
+tempfile = "3.2"

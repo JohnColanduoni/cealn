@@ -1,0 +1,127 @@
+syntax = "proto3";
+
+package cealn.event;
+
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/struct.proto";
+import "file.proto";
+
+message BuildEvent {
+    google.protobuf.Timestamp timestamp = 2;
+
+    oneof source {
+        RootWorkspaceLoadSource root_workspace_load = 100;
+        PackageLoadSource package_load = 101;
+        RuleAnalysisSource rule_analysis = 102;
+        ActionSource action = 103;
+        OutputSource output = 104;
+        ActionAnalysisSource action_analysis = 105;
+        InternalQuerySource internal_query = 106;
+    }
+
+    oneof data {
+        InternalError internal_error = 1000;
+        QueryRunStart query_run_start = 1003;
+        QueryRunEnd query_run_end = 1004;
+        CacheCheckStart cache_check_start = 1009;
+        CacheCheckEnd cache_check_end = 1010;
+        Progress progress = 1005;
+        ExecutablePrepped executable_prepped = 1006;
+        ActionCacheHit action_cache_hit = 1008;
+        WatchRun watch_run = 1012;
+        WatchIdle watch_idle = 1011;
+
+        Stdio stdio = 1002;
+        StructuredMessage message = 1007;
+
+        WorkspaceFileNotFound workspace_file_not_found = 1001;
+    }
+}
+
+message RootWorkspaceLoadSource {
+
+}
+
+message PackageLoadSource {
+    string label = 1;
+}
+
+message RuleAnalysisSource {
+    string target_label = 1;
+}
+
+message ActionSource {
+    string mnemonic = 1;
+    string progress_message = 2;
+}
+
+message ActionAnalysisSource {
+    string mnemonic = 1;
+    string progress_message = 2;
+}
+
+message OutputSource {
+    string label = 1;
+}
+
+message InternalQuerySource {}
+
+message WorkspaceFileNotFound {
+    cealn.file.SystemFilename directory = 1;
+    bool exists_with_different_case = 2;
+}
+
+message InternalError {
+    string message = 1;
+    repeated string backtrace = 2;
+    InternalError cause = 3;
+    bool nested_query = 4;
+}
+
+message Stdio {
+    bytes line = 1;
+    StdioStreamType stream = 2;
+}
+
+enum StdioStreamType {
+    STDIO_UNSPECIFIED = 0;
+    STDIO_STDOUT = 1;
+    STDIO_STDERR = 2;
+}
+
+message StructuredMessage {
+    StructuredMessageLevel level = 1;
+    google.protobuf.Struct data = 2;
+    string human_field = 3;
+}
+
+enum StructuredMessageLevel {
+    LEVEL_UNSPECIFIED = 0;
+    LEVEL_ERROR = 1;
+    LEVEL_WARN = 2;
+    LEVEL_INFO = 3;
+    LEVEL_DEBUG = 4;
+}
+
+message QueryRunStart {}
+
+message QueryRunEnd {}
+
+message CacheCheckStart {}
+
+message CacheCheckEnd {}
+
+message Progress {
+    double fraction = 1;
+}
+
+message ExecutablePrepped {
+    uint32 parent_pid = 1;
+    string executable_path = 2;
+}
+
+message ActionCacheHit {}
+
+message WatchRun {}
+
+message WatchIdle {}

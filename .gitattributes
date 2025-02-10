@@ -1,0 +1,2 @@
+# Prevent platform-specific line endings manipulation by git
+* -text

@@ -1,0 +1,10 @@
+[package]
+name = "cealn-runtime-data"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-data = { path = "../data" }
+
+serde = { version = "1.0", features = ["derive"] }
+thiserror = "1.0"

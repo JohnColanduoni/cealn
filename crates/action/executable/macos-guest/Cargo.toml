@@ -1,0 +1,11 @@
+[package]
+name = "cealn-action-executable-macos-guest"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "guest"
+path = "src/main.rs"
+
+[dependencies]
+cfg-if = "1.0"

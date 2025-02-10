@@ -1,0 +1,13 @@
+[package]
+name = "cealn-test-util"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-core = { path = "../core" }
+cealn-test-util-macro = { path = "../test-util-macro" }
+
+cfg-if = "0.1.10"
+lazy_static = "1.4"
+tempfile = "3.1"
+tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }

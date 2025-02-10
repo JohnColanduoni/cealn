@@ -1,0 +1,58 @@
+[package]
+name = "cealn-action-executable"
+version = "0.0.0"
+edition = "2021"
+
+[[test]]
+name = "simple_execute"
+harness = false
+
+[dependencies]
+cealn-core = { path = "../../core" }
+cealn-data = { path = "../../data" }
+cealn-depset = { path = "../../depset" }
+cealn-protocol = { path = "../../protocol" }
+cealn-action-context = { path = "../context" }
+cealn-event = { path = "../../event" }
+cealn-fs = { path = "../../fs" }
+
+anyhow.workspace = true
+regex = "1.7"
+bumpalo = { version = "3.7", features = ["collections"] }
+dashmap = { workspace = true }
+cfg-if = "1.0"
+futures = "0.3.5"
+hashbrown = { version = "0.11.2", features = ["raw"] }
+heapless = "0.7.16"
+hex = "0.4.3"
+lazy_static = "1.0"
+memchr = "2.4"
+offset = "0.1.4"
+prost-types = "0.11.8"
+uuid = { version = "0.8.1", features = ["v4"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+shell-escape = "0.1.5"
+tempfile = "3.2"
+thiserror = "1.0"
+tokio = "1.0"
+tracing = "0.1.19"
+compio-core = { workspace = true, features = ["io-uring"] }
+compio-fs = { workspace = true, features = ["io-uring"] }
+compio-executor = { path = "../../../../public/compio/compio-executor", features = ["local-pool"] }
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.74"
+
+[target.'cfg(target_os = "linux")'.dependencies]
+syscalls = "0.6.10"
+fuse-backend-rs = { path = "../../../vendor/fuse-backend-rs" }
+
+[target.'cfg(target_os = "macos")'.dependencies]
+cealn-action-executable-macos-sys = { path = "macos-sys" }
+
+memmap = "0.7.0"
+object = { version = "0.31.0", default-features = false, features = ["std", "macho", "elf", "read_core"] }
+
+[dev-dependencies]
+futures = { version = "0.3.5", features = ["thread-pool"] }

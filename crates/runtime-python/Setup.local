@@ -1,0 +1,19 @@
+# Module/Setup.local with reduced stdlib
+*disabled*
+_asyncio
+audioop
+_bz2
+_crypt
+_decimal
+_lzma
+nis
+_pickle
+pyexpat _elementtree
+_zoneinfo
+xxsubtype
+zlib
+binascii
+socketmodule
+
+# cjk codecs
+#_multibytecodec _codecs_cn _codecs_hk _codecs_iso2022 _codecs_jp _codecs_kr _codecs_tw

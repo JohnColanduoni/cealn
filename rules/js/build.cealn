@@ -1,0 +1,6 @@
+from workspaces.com_cealn_rust.rules import CargoWorkspace
+
+CargoWorkspace(
+    name="cargo_workspace",
+    workspace_toml="Cargo.toml",
+)

@@ -1,0 +1,12 @@
+[package]
+name = "cealn-action-executable-linux-interceptor"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+name = "cealn_interceptor"
+crate-type = ["cdylib"]
+
+[dependencies]
+syscalls = { version = "0.6", default-features = false }
+libc = { version = "0.2.98", default-features = false }

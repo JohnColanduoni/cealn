@@ -1,0 +1,64 @@
+[package]
+name = "cealn-compose"
+version = "0.0.0"
+edition = "2021"
+
+[[bin]]
+name = "cealn-compose"
+path = "src/main.rs"
+
+[dependencies]
+cealn-core = { path = "../core" }
+cealn-data = { path = "../data" }
+cealn-client = { path = "../client" }
+cealn-cli-support = { path = "../cli-support" }
+cealn-rules-compose-data = { path = "../../rules/compose/data" }
+cealn-docker = { path = "../docker" }
+
+anyhow.workspace = true
+atty = "0.2.14"
+cfg-if = "0.1.10"
+clap = { version = "4.2", features = ["suggestions", "color", "wrap_help", "derive"] }
+clap_complete = { version = "4.2", features = ["unstable-dynamic"] }
+convert_case = "0.6.0"
+crossterm = "0.26.1"
+dirs = "5.0"
+futures = "0.3.5"
+mimalloc = "0.1.37"
+kube-client = { version = "0.82.2", features = ["rustls-tls", "ws"] }
+k8s-openapi = { version = "0.18.0", features = ["v1_26"] }
+openssl = { version = "*", features = ["vendored"] }
+prost-types = "0.11.8"
+rand = "0.8.5"
+serde = "1.0"
+serde_json = "1.0"
+serde_yaml = "0.8.21"
+target-lexicon = "0.12.7"
+tracing = { version = "0.1.19", features = ["release_max_level_debug"] }
+tracing-subscriber = { version = "0.3.16", features = ["registry", "env-filter", "fmt", "ansi"]  }
+tracing-futures = "0.2.4"
+thiserror = "1.0"
+whoami = "0.9"
+ring = "0.16.20"
+hex = "0.4.0"
+compio-core = { workspace = true, features = ["io-uring"] }
+compio-fs = { workspace = true, features = ["io-uring"] }
+tempfile = "3.2"
+tar = "0.4.29"
+oci-spec = "0.6.0"
+flate2 = "1.0"
+regex = "1.8"
+
+opentelemetry = { version = "0.19.0", features = ["rt-tokio", "rt-tokio-current-thread"]  }
+tracing-opentelemetry = { version = "0.17.4", default-features = false, features = ["tracing-log"] }
+opentelemetry-otlp = { version = "0.12.0", features = ["tokio", "http-proto", "reqwest-client", "reqwest-rustls"] }
+reqwest = { workspace = true }
+opentelemetry-semantic-conventions = { version = "0.11.0" }
+tokio = "1.0"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2.74"
+
+[target.'cfg(target_os = "windows")'.dependencies]
+widestring = "0.4.3"
+winapi = { version = "0.3.9", features = ["fileapi", "processthreadsapi", "processenv", "libloaderapi"] }

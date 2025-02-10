@@ -1,0 +1,16 @@
+[package]
+name = "cealn-source-fs"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-data = { path = "../../data" }
+cealn-source = { path = "../" }
+cealn-runtime = { path = "../../runtime" }
+cealn-runtime-virt = { path = "../../runtime-virt" }
+
+anyhow.workspace = true
+async-trait = "0.1.68"
+futures = "0.3.5"
+pin-project = "1.0"
+tracing = "0.1.19"

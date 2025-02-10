@@ -1,0 +1,5 @@
+{
+    // Python stuff
+    "python.analysis.extraPaths": ["${workspaceFolder}/pythonlib/src"],
+    "python.defaultInterpreterPath": "../tools/.venv"
+}

@@ -1,0 +1,9 @@
+[package]
+name = "cealn-rules-compose-data"
+version = "0.0.0"
+edition = "2018"
+
+[dependencies]
+serde = { version = "1.0", features = ["derive"] }
+oci-spec = "0.6.0"
+k8s-openapi = { version = "0.18.0", features = ["v1_26"] }

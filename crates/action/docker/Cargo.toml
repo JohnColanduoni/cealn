@@ -1,0 +1,31 @@
+[package]
+name = "cealn-action-docker"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-data = { path = "../../data" }
+cealn-action-context = { path = "../context" }
+cealn-depset = { path = "../../depset" }
+
+anyhow.workspace = true
+cfg-if = "1.0"
+dirs = "5.0"
+dkregistry = "0.5"
+async-compression = { version = "0.3.1", features = ["tokio", "gzip"] }
+futures = "0.3.5"
+hex = "0.4.3"
+lazy_static = "1.0"
+regex = "1.5"
+ring = "0.16.20"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = "1.0"
+tokio-tar = "0.3.0"
+tracing = "0.1.19"
+compio-core = { workspace = true }
+compio-fs = { workspace = true }
+
+[dev-dependencies]
+cealn-test-util = { path = "../../test-util" }
+cealn-action-test-util = { path = "../test-util" }

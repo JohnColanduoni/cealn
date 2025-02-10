@@ -1,0 +1,173 @@
+cargo-features = ["named-profiles"]
+
+[workspace]
+resolver = "2"
+members = [
+    "crates/action",
+    "crates/action/context",
+    "crates/action/docker",
+    "crates/action/executable",
+    "crates/action/executable/macos-sys",
+    "crates/action/executable/macos-guest",
+    "crates/action/executable/linux-interceptor",
+    "crates/action/extract",
+    "crates/action/git",
+    "crates/action/net",
+    "crates/action/test-util",
+    "crates/cache",
+    "crates/cli-support",
+    "crates/compose",
+    "crates/core",
+    "crates/data",
+    "crates/data/derive-provider-serde",
+    "crates/depset",
+    "crates/docker",
+    "crates/event",
+    "crates/fs",
+    "crates/fs/materialize",
+    "crates/server",
+    "crates/client",
+    "crates/protocol",
+    "crates/driver",
+    "crates/runtime-python",
+    "crates/runtime-python-embed",
+    "crates/runtime-virt",
+    "crates/runtime-data",
+    "crates/source",
+    "crates/source/fs",
+    "crates/test-util",
+    "crates/test-util-macro",
+]
+exclude = [
+    "vendor"
+]
+
+[profile.fastbuild]
+inherits = "dev"
+debug = 1
+incremental = true
+
+[profile.release]
+lto = "thin"
+debug = 1
+panic = "abort"
+
+[profile.fastopt]
+inherits = "release"
+opt-level = 2
+lto = false
+incremental = true
+
+[patch.crates-io]
+tracing-opentelemetry = { path = "../vendor/tracing-opentelemetry" }
+opentelemetry = { path = "../vendor/opentelemetry-rust/opentelemetry" }
+opentelemetry-otlp = { path = "../vendor/opentelemetry-rust/opentelemetry-otlp" }
+anyhow = { path = "../vendor/anyhow" }
+
+[workspace.dependencies]
+compio-fs = { path = "../public/compio/compio-fs" }
+compio-core = { path = "../public/compio/compio-core" }
+reqwest = { version = "0.11.4", default-features = false, features = ["rustls-tls-native-roots", "trust-dns", "gzip", "deflate", "json", "socks"] }
+
+anyhow = { version = "1.0", features = ["backtrace"] }
+dashmap = "4.0"
+
+# Build wasmtime & cranelift in release mode since we're not debugging
+# their internals. Greatly speeds up tests.
+[profile.dev.package.wasmtime]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.wasmtime-cache]
+opt-level = 3
+debug = 1
+# This one is particularly important: without setting this, wasmtime-cache will use the current executable mtime
+# in the cache key, limiting its usefulness.
+debug-assertions = false
+[profile.dev.package.wasmtime-jit]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.wasmtime-runtime]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.wasmtime-environ]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.wasmparser]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.wasmtime-cranelift]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-codegen]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-codegen-shared]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-entity]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-frontend]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-native]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-wasm]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.cranelift-bforest]
+opt-level = 3
+debug = 1
+debug-assertions = false
+# Misc dependencies used heavily by cranelift or wasmtime
+[profile.dev.package.regalloc2]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.hashbrown]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.bumpalo]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.zstd]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.zstd-sys]
+opt-level = 3
+debug = 1
+debug-assertions = false
+
+# Improve load speed of embedded resources when debugging
+[profile.dev.package.xz2]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.flate2]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.miniz_oxide]
+opt-level = 3
+debug = 1
+debug-assertions = false
+[profile.dev.package.crc32fast]
+opt-level = 3
+debug = 1
+debug-assertions = false

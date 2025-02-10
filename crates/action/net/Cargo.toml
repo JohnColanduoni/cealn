@@ -1,0 +1,16 @@
+[package]
+name = "cealn-action-net"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-action-context = { path = "../context" }
+cealn-data = { path = "../../data" }
+cealn-depset = { path = "../../depset" }
+cealn-protocol = { path = "../../protocol" }
+
+anyhow.workspace = true
+ring = "0.16.20"
+tracing = "0.1.19"
+futures = "0.3"
+reqwest = { workspace = true }

@@ -1,0 +1,59 @@
+[package]
+name = "cealn-server"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+async-trait = "0.1.68"
+arc-swap = "0.4.7"
+cfg-if = "0.1.10"
+chrono = "0.4.15"
+dashmap = { workspace = true }
+lazy_static = "1.4"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.10", features = ["macros", "rt-multi-thread"] }
+fs3 = "0.5.0"
+futures = { version = "0.3.5" }
+hyper = "0.14.25"
+num_cpus = "1.15"
+pin-project = "1.0"
+tempfile = "3.2"
+thiserror = "1.0"
+toml = "0.5.6"
+tonic = "0.9.1"
+tracing = "0.1.18"
+tracing-futures = "0.2.4"
+ring = "0.16.15"
+slab = "0.4.2"
+weak-table = "0.3.2"
+parking_lot = "0.12.1"
+async-lock = "1.1"
+compio-executor = { path = "../../../public/compio/compio-executor", features = ["thread-pool"] }
+compio-core = { workspace = true }
+compio-fs = { workspace = true }
+
+cealn-action = { path = "../action" }
+cealn-action-context = { path = "../action/context" }
+cealn-action-executable = { path = "../action/executable" }
+cealn-cache = { path = "../cache" }
+cealn-core = { path = "../core" }
+cealn-data = { path = "../data" }
+cealn-depset = { path = "../depset" }
+cealn-event = { path = "../event" }
+cealn-protocol = { path = "../protocol" }
+cealn-runtime = { path = "../runtime" }
+cealn-runtime-data = { path = "../runtime-data" }
+cealn-runtime-virt = { path = "../runtime-virt" }
+cealn-runtime-python-embed = { path = "../runtime-python-embed" }
+cealn-source = { path = "../source" }
+cealn-source-fs = { path = "../source/fs" }
+cealn-fs = { path = "../fs" }
+cealn-fs-materialize = { path = "../fs/materialize" }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+proc-mounts = "0.3.0"
+
+[dev-dependencies]
+cealn-test-util = { path = "../test-util" }

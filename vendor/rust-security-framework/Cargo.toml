@@ -1,0 +1,7 @@
+[workspace]
+members = [
+    "security-framework-sys",
+    "security-framework",
+    "iostest",
+    "systest"
+]

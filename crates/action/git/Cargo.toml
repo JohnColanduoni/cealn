@@ -1,0 +1,18 @@
+[package]
+name = "cealn-action-git"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-action-context = { path = "../context" }
+cealn-data = { path = "../../data" }
+cealn-depset = { path = "../../depset" }
+cealn-protocol = { path = "../../protocol" }
+
+anyhow.workspace = true
+bumpalo = "3.7"
+futures = "0.3"
+ring = "0.16.20"
+tracing = "0.1.19"
+git2 = { version = "0.17.0", features = ["vendored-openssl"] }
+compio-executor = { path = "../../../../public/compio/compio-executor" }

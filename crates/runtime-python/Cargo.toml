@@ -1,0 +1,25 @@
+[package]
+name = "cealn-runtime-python"
+version = "0.0.0"
+edition = "2021"
+
+[lib]
+path = "src/lib.rs"
+
+[[bin]]
+name = "runtime-python"
+path = "src/main.rs"
+
+[dependencies]
+cealn-data = { path = "../data" }
+cealn-runtime-data = { path = "../runtime-data" }
+
+cfg-if = "0.1.10"
+cpython = { path = "../../vendor/rust-cpython" } 
+python3-sys = { path = "../../vendor/rust-cpython/python3-sys", features = ["python-3-8"] }
+libc = "0.2.74"
+lazy_static = "1.4"
+pathdiff = "0.2.0"
+serde = "1.0"
+serde_json = "1.0"
+thiserror = "1.0"

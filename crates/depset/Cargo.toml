@@ -1,0 +1,18 @@
+[package]
+name = "cealn-depset"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-data = { path = "../data" }
+
+cfg-if = "1.0"
+dashmap = { workspace = true }
+fxhash = "0.2.1"
+hashbrown = { version = "0.11.2", features = ["raw"] }
+lazy_static = "1.0"
+regex = "1.8"
+ring = "0.16.20"
+serde = "1.0"
+smallvec = "1.6"
+tracing = "0.1.19"

@@ -1,0 +1,33 @@
+[package]
+name = "cealn-source"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+cfg-if = "0.1.10"
+dashmap = { workspace = true }
+lazy_static = "1.4"
+futures = { version = "0.3.5", features = ["thread-pool"] }
+ignore = "0.4.18"
+pin-project = "1.0"
+tracing = "0.1.18"
+tracing-futures = "0.2.4"
+ring = "0.16.15"
+slab = "0.4.2"
+spin = "0.9.8"
+tokio = "1.10"
+parking_lot = "0.12.1"
+
+compio-fs = { workspace = true }
+
+cealn-cache = { path = "../cache" }
+cealn-core = { path = "../core", features = ["compio-fs"] }
+cealn-data = { path = "../data" }
+cealn-protocol = { path = "../protocol" }
+
+[target.'cfg(target_os = "linux")'.dependencies]
+libc = "0.2.74"
+
+[dev-dependencies]
+tempfile = "3.2"

@@ -1,0 +1,24 @@
+[package]
+name = "cealn-action-extract"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-action-context = { path = "../context" }
+cealn-data = { path = "../../data" }
+cealn-depset = { path = "../../depset" }
+cealn-cache = { path = "../../cache" }
+
+anyhow.workspace = true
+infer = "0.13.0"
+futures = "0.3"
+ring = "0.16.20"
+async-tar = "0.4.2"
+flate2 = "1.0"
+tracing = "0.1.19"
+xz2 = "0.1.7"
+tokio = "1.0"
+zip = "0.6.4"
+zstd = "0.12.3+zstd.1.5.2"
+compio-fs = { workspace = true }
+compio-core = { workspace = true, features = ["tokio"] }

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package cealn.file;
+
+message SystemFilename {
+    oneof raw {
+        PosixFilename posix = 1;
+        NtFilename nt = 2;
+    }
+}
+
+message PosixFilename {
+    bytes raw = 1;
+}
+
+message NtFilename {
+    bytes raw_le = 1;
+}

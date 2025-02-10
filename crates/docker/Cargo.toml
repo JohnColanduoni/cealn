@@ -1,0 +1,25 @@
+[package]
+name = "cealn-docker"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+cfg-if = "1.0"
+dirs = "5.0"
+dkregistry = "0.5"
+async-compression = { version = "0.3.1", features = ["tokio", "gzip"] }
+futures = "0.3.5"
+hex = "0.4.3"
+lazy_static = "1.0"
+regex = "1.5"
+reqwest = { workspace = true }
+ring = "0.16.20"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = "1.0"
+tokio-tar = "0.3.0"
+tracing = "0.1.19"
+http-auth = "0.1.8"
+compio-core = { workspace = true }
+compio-fs = { workspace = true }

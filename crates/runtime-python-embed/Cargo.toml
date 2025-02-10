@@ -1,0 +1,22 @@
+[package]
+name = "cealn-runtime-python-embed"
+version = "0.0.0"
+edition = "2021"
+
+[dependencies]
+cealn-runtime = { path = "../runtime" }
+cealn-runtime-virt = { path = "../runtime-virt" } 
+
+lazy_static = "1.4"
+thiserror = "1.0"
+tracing = "0.1.19"
+xz2 = "0.1.6"
+
+[build-dependencies]
+tar = "0.4.29"
+xz2 = "0.1.6"
+
+[dev-dependencies]
+cealn-test-util = { path = "../test-util" }
+
+futures = "0.3.5"

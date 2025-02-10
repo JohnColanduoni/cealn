@@ -1,0 +1,10 @@
+[package]
+name = "cealn-rules-rust-support"
+version = "0.0.0"
+edition = "2018"
+
+[dependencies]
+# memchr has a build script, but we can't allow this package to have any dependencies with build scripts (as that would result in a circular dependency on itself)
+regex = { version = "1.7", default-features = false, features = ["std", "perf-dfa", "perf-inline"] }
+glob = "0.3.1"
+lazy_static = "1.0"

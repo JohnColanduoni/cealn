@@ -1,0 +1,8 @@
+/target
+/doc
+/gh-pages
+
+*.so
+*.out
+extensions/stamps/
+extensions/tests/*.dSYM/

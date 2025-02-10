@@ -1,0 +1,29 @@
+use libc::{c_char, c_int, c_void};
+
+use crate::pyport::{Py_hash_t, Py_ssize_t};
+
+#[repr(C)]
+#[derive(Copy)]
+pub struct PyHash_FuncDef {
+    pub hash: Option<extern "C" fn(arg1: *const c_void, arg2: Py_ssize_t) -> Py_hash_t>,
+    pub name: *const c_char,
+    pub hash_bits: c_int,
+    pub seed_bits: c_int,
+}
+impl Clone for PyHash_FuncDef {
+    #[inline]
+    fn clone(&self) -> Self {
+        *self
+    }
+}
+impl Default for PyHash_FuncDef {
+    #[inline]
+    fn default() -> Self {
+        unsafe { ::core::mem::zeroed() }
+    }
+}
+
+#[cfg_attr(windows, link(name = "pythonXY"))]
+extern "C" {
+    pub fn PyHash_GetFuncDef() -> *mut PyHash_FuncDef;
+}
