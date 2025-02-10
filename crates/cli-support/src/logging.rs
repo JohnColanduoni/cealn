@@ -1,34 +1,11 @@
 use std::{
     env,
-    fmt::Write,
-    fs,
-    io::{self, Write as IoWrite},
-    mem,
-    path::{Path, PathBuf},
-    process,
-    sync::Arc,
-    thread,
-    time::Duration,
+    io::{self, LineWriter},
+    fmt::Write
 };
 
-use anyhow::{bail, Result};
-use clap::{Parser, Subcommand};
-use futures::{channel::oneshot, pin_mut, prelude::*};
-
-use opentelemetry::sdk::trace::{BatchConfig, TracerProvider};
-use tracing::{debug, error};
-
-use cealn_client::{BuildRequest, Client, ClientOptions};
-use cealn_core::{
-    files::{workspace_file_exists_in, WellKnownFileError},
-    trace_call_result,
-    tracing::error_value,
-};
-use cealn_data::{Label, LabelBuf};
-use io::LineWriter;
+use opentelemetry::trace::TracerProvider;
 use tracing_subscriber::{prelude::*, EnvFilter};
-
-use crate::console::Console;
 
 const BAD_LOGGERS: &[(&str, &str)] = &[
     ("cranelift_codegen", "warn"),
@@ -94,38 +71,41 @@ pub fn init(debug: bool, is_server: bool) -> LoggingGuard {
 
     let subscriber = registry.with(stderr_subscriber);
 
-    let provider;
+    let tracer;
     let subscriber = {
         use opentelemetry_otlp::WithExportConfig;
 
         let subscriber = {
-            let otlp_exporter = opentelemetry_otlp::new_exporter()
-                .http()
-                .with_http_client(reqwest::Client::builder().build().unwrap())
-                .with_endpoint("http://otel.dev.hardscience.io/v1/traces");
-            let tracer = opentelemetry_otlp::new_pipeline()
-                .tracing()
-                .with_exporter(otlp_exporter)
-                .with_trace_config(opentelemetry::sdk::trace::config().with_resource(
-                    opentelemetry::sdk::Resource::new(vec![
-                        opentelemetry::KeyValue::new(
-                            opentelemetry_semantic_conventions::resource::SERVICE_NAME.as_str(),
-                            "cealn",
-                        ),
-                        opentelemetry::KeyValue::new("build.profile", env!("PROFILE")),
-                    ]),
-                ))
-                .with_batch_config(
-                    BatchConfig::default()
-                        .with_max_queue_size(1024 * 1024)
-                        .with_max_concurrent_exports(16),
-                )
-                .install_batch(opentelemetry::runtime::Tokio)
+            let otlp_exporter = opentelemetry_otlp::SpanExporter::builder()
+                .with_http()
+                .with_endpoint("http://otel.cealn.dev/v1/traces")
+                .build()
                 .unwrap();
-            provider = tracer.provider().unwrap();
+            tracer = opentelemetry_sdk::trace::TracerProvider::builder()
+                .with_span_processor(
+                    opentelemetry_sdk::trace::BatchSpanProcessor::builder(
+                        otlp_exporter,
+                        opentelemetry_sdk::runtime::Tokio,
+                    )
+                    .with_batch_config(
+                        opentelemetry_sdk::trace::BatchConfigBuilder::default()
+                            .with_max_queue_size(1024 * 1024)
+                            .with_max_concurrent_exports(16)
+                            .build(),
+                    )
+                    .build(),
+                )
+                .with_resource(opentelemetry_sdk::Resource::new(vec![
+                    opentelemetry::KeyValue::new(
+                        opentelemetry_semantic_conventions::resource::SERVICE_NAME,
+                        "cealn",
+                    ),
+                    opentelemetry::KeyValue::new("build.profile", env!("PROFILE")),
+                ]))
+                .build();
 
             let telemetry = tracing_opentelemetry::layer()
-                .with_tracer(tracer)
+                .with_tracer(tracer.tracer("tracing"))
                 .with_filter(EnvFilter::new("debug"));
             subscriber.with(telemetry)
         };
@@ -135,18 +115,18 @@ pub fn init(debug: bool, is_server: bool) -> LoggingGuard {
     tracing::subscriber::set_global_default(subscriber).unwrap();
 
     LoggingGuard {
-        provider: Some(provider),
+        tracer: Some(tracer),
     }
 }
 
 pub struct LoggingGuard {
-    provider: Option<TracerProvider>,
+    tracer: Option<opentelemetry_sdk::trace::TracerProvider>,
 }
 
 impl LoggingGuard {
     pub async fn flush(mut self) {
         let _ = tokio::task::spawn_blocking({
-            let provider = self.provider.take().unwrap();
+            let provider = self.tracer.take().unwrap();
             move || {
                 provider.force_flush();
                 opentelemetry::global::shutdown_tracer_provider();

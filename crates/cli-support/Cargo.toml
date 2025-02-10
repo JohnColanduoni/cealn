@@ -39,7 +39,7 @@ opentelemetry_sdk.workspace = true
 tracing-opentelemetry.workspace =true
 opentelemetry-otlp.workspace =true
 reqwest = { workspace = true }
-opentelemetry-semantic-conventions = { version = "0.11.0" }
+opentelemetry-semantic-conventions.workspace = true
 tokio = "1.0"
 
 [target.'cfg(unix)'.dependencies]

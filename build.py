@@ -32,7 +32,7 @@ def build(*, target_os=None, target_arch=None, profile="dev", locked=False):
         py_arch = platform.machine()
         if py_arch == "x86_64":
             target_arch = "x86_64"
-        elif py_arch == "arm64":
+        elif py_arch == "aarch64" or py_arch == "arm64":
             target_arch = "aarch64"
         else:
             raise RuntimeError("unsupported arch")
@@ -121,7 +121,7 @@ def build(*, target_os=None, target_arch=None, profile="dev", locked=False):
                 SRC_ROOT
                 / "target"
                 / "runtime-target"
-                / "wasm32-wasi"
+                / "wasm32-wasip1"
                 / profile_dirname
                 / "runtime-python.wasm"
             ),
@@ -129,7 +129,7 @@ def build(*, target_os=None, target_arch=None, profile="dev", locked=False):
                 SRC_ROOT
                 / "target"
                 / "runtime-target"
-                / "wasm32-wasi"
+                / "wasm32-wasip1"
                 / profile_dirname
                 / "python_libs"
             ),

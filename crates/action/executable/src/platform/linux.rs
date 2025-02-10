@@ -27,7 +27,7 @@ use std::{
 };
 
 use anyhow::{bail, Context as AnyhowContext};
-use cealn_depset::{depmap, ConcreteFiletree, DepMap};
+use cealn_depset::{depmap, ConcreteFiletree, ConcreteFiletreeBuilder, DepMap};
 use compio_core::buffer::AllowTake;
 use compio_fs::{os::linux::FileExt, Directory, File, OpenOptions};
 use futures::{channel::oneshot, FutureExt};
@@ -777,7 +777,7 @@ pub fn enter_prepared(parent_pid: u32, executable_path: &Path, args: &[OsString]
 }
 
 #[tracing::instrument(level = "info", skip(context, depmap))]
-async fn load_depmap<C>(context: &C, source_root: &Path, depmap: &mut ConcreteFiletree::Builder) -> anyhow::Result<()>
+async fn load_depmap<C>(context: &C, source_root: &Path, depmap: &mut ConcreteFiletreeBuilder) -> anyhow::Result<()>
 where
     C: Context,
 {

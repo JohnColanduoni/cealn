@@ -113,6 +113,7 @@ class CargoPackage(Rule):
 
         self.target_linker = self.cc_toolchain.linker(self.build_config)
         if self.build_config[Os] == Cuda:
+            # FIXME: hack
             self.target_linker = await self.resolve_executable(
                 "@io.hardscience//tools/cuda/linker:crate", "hs-cuda-linker"
             )

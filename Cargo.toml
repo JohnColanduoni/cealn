@@ -64,9 +64,11 @@ compio-core = { path = "vendor/compio/compio-core" }
 compio-executor = { path = "vendor/compio/compio-executor" }
 reqwest = { version = "0.11.4", default-features = false, features = ["rustls-tls-native-roots", "trust-dns", "gzip", "deflate", "json", "socks"] }
 opentelemetry = { version = "0.27.0" }
-opentelemetry_sdk = { version = "0.27.0" }
+opentelemetry_sdk = { version = "0.27.0", features = ["rt-tokio"] }
 tracing-opentelemetry = { version = "0.28.0", default-features = false, features = ["tracing-log"] }
 opentelemetry-otlp = { version = "0.27.0", features = ["tokio", "http-proto", "reqwest-client", "reqwest-rustls"] }
+opentelemetry-semantic-conventions = { version = "0.27.0" }
+dkregistry = { git = "https://github.com/camallo/dkregistry-rs", rev = "3e242ee9e39646da6ff4a886e080085cc1810d37", default-features = false, features = ["reqwest-rustls"] }
 
 anyhow = { version = "1.0", features = ["backtrace"] }
 dashmap = "4.0"

@@ -1,6 +1,9 @@
 [build]
 rustflags = ["--cfg=nightly"]
 
+[env]
+CC="clang"
+
 [target.x86_64-pc-windows-msvc]
 linker = "lld-link"
 
@@ -8,8 +11,15 @@ linker = "lld-link"
 linker = "rust-lld"
 rustflags = []
 
-[target.aarch64-apple-darwin]
-rustflags = ["-C", "link-arg=-fuse-ld=sold"]
+[target.x86_64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
+
+[target.aarch64-unknown-linux-musl]
+linker = "rust-lld"
+rustflags = []
+
+[target.aarch64-unknown-linux-gnu]
+rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 [target.wasm32-wasi]
 linker = "rust-lld"

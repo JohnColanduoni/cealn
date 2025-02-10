@@ -401,8 +401,7 @@ fn prepare_internal_error(err: &QueryError) -> InternalError {
         } else {
             prev_cause = Some(Box::new(InternalError {
                 message: inner_cause.to_string(),
-                backtrace: inner_cause
-                    .request_ref::<Backtrace>()
+                backtrace: std::error::request_ref::<Backtrace>(inner_cause)
                     .and_then(|x| format_backtrace(x))
                     .unwrap_or_default(),
                 cause: prev_cause,

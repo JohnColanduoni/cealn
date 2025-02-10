@@ -13,5 +13,6 @@ use cealn_data::{
 pub use self::{depmap::DepMap, registry::Registry};
 
 pub type ConcreteFiletree = DepMap<NormalizedDescending<LabelPathBuf>, FileEntry>;
+pub type ConcreteFiletreeBuilder = depmap::Builder<NormalizedDescending<LabelPathBuf>, FileEntry>;
 
 pub type LabelFiletree = DepMap<NormalizedDescending<LabelPathBuf>, LabelBuf>;
