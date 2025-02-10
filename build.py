@@ -6,6 +6,7 @@ import shlex
 import sys
 import os
 from pathlib import Path
+import argparse
 
 SRC_ROOT = Path(__file__).resolve().parent
 TARGET_DIR = SRC_ROOT / "target"
@@ -153,8 +154,13 @@ def build(*, target_os=None, target_arch=None, profile="dev", locked=False):
 
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--locked", action=argparse.BooleanOptionalAction)
+
+    args = parser.parse_args()
+
     try:
-        build()
-    except Exception as ex:
+        build(locked=args.locked)
+    except RuntimeError as ex:
         print(str(ex), file=sys.stderr)
         sys.exit(1)
